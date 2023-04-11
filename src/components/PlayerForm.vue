@@ -3,10 +3,11 @@ import { ref } from "vue";
 import FullGame from "./FullGame.vue";
 import StartScreen from "./StartScreen.vue";
 import { Player } from "../models/Player";
+import { getPlayerListFromLS, setPlayerListInLS } from "../localStorageFns";
 // Form for player names
 let playerScr = ref(true);
 let startScr = ref(false);
-let game = ref(false);
+let gameScr = ref(false);
 
 function goToStartScr() {
   startScr.value = true;
@@ -17,16 +18,55 @@ let playerOneUsername = ref("");
 let playerTwoUsername = ref("");
 function goToGameScr() {
   playerScr.value = false;
-  game.value = true;
+  gameScr.value = true;
+}
+let playerOneAlreadyExist = ref(false);
+let playerTwoAlreadyExist = ref(false);
+function checkUsernames(playerOneName: string, playerTwoName: string) {
+  playerOneAlreadyExist.value = false;
+  playerTwoAlreadyExist.value = false;
+
+  let playerList: Player[] = getPlayerListFromLS();
+  for (let i = 0; i < playerList.length; i++) {
+    console.log(playerList[i]);
+    if (playerList[i].username === playerOneName) {
+      playerOneAlreadyExist.value = true;
+    }
+    if (playerList[i].username === playerTwoName) {
+      playerTwoAlreadyExist.value = true;
+    }
+  }
 }
 function addPlayerNames(playerOneName: string, playerTwoName: string) {
   console.log(playerOneName);
   console.log(playerTwoName);
-
-  // if(playerOneName)
-  // let playerOne=new Player(playerOneName,0)
-  //emit/prop till fullgame m usernames
-  goToGameScr();
+  let playerList: Player[] = getPlayerListFromLS();
+  for (let i = 0; i < playerList.length; i++) {
+    console.log(playerList[i]);
+    if (playerList[i].username === playerOneName) {
+      return playerList[i];
+    } else {
+      let playerOne = new Player(playerOneName, 0);
+      playerList.push(playerOne);
+    }
+    if (playerList[i].username === playerTwoName) {
+      return playerList[i];
+    } else {
+      let playerTwo = new Player(playerTwoName, 0);
+      playerList.push(playerTwo);
+    }
+    console.log(playerList);
+    goToGameScr();
+    console.log("last in fn");
+  }
+  console.log(playerList);
+  // if()
+  // let playerOne = new Player(playerOneName, 0);
+  // let playerTwo = new Player(playerTwoName, 0);
+  // //emit/prop till fullgame m usernames
+  // playerList.push(playerOne);
+  // playerList.push(playerTwo);
+  // setPlayerListInLS(playerList);
 }
 </script>
 
@@ -40,7 +80,12 @@ function addPlayerNames(playerOneName: string, playerTwoName: string) {
     >
       <label for="player-one">
         <p>
-          Player1 -> <b>{{ playerOneUsername }}</b>
+          Player1 ->
+          <b>{{ playerOneUsername }}</b>
+        </p>
+        <p id="warning" v-if="playerOneAlreadyExist">
+          Username already exist, if you want to continue using this profile,
+          press play, or choose another username
         </p>
         <input type="text" id="player-one" v-model="playerOneUsername" />
       </label>
@@ -48,14 +93,27 @@ function addPlayerNames(playerOneName: string, playerTwoName: string) {
         ><p>
           Player2 -> <b>{{ playerTwoUsername }}</b>
         </p>
+        <p id="warning" v-if="playerTwoAlreadyExist">
+          Username already exist, if you want to continue using this profile,
+          press play, or choose another username
+        </p>
         <input type="text" id="player-two" v-model="playerTwoUsername" />
       </label>
-      <button type="submit" id="play-btn">Play</button>
+      <div id="btn-section">
+        <button
+          type="button"
+          id="check-btn"
+          @click="() => checkUsernames(playerOneUsername, playerTwoUsername)"
+        >
+          Check usernames
+        </button>
+        <button type="submit" id="play-btn">Play</button>
+      </div>
     </form>
     <button id="back-btn" @click="() => goToStartScr()">Back to Start</button>
   </section>
   <StartScreen v-if="startScr" />
-  <FullGame v-if="game" />
+  <FullGame v-if="gameScr" />
 </template>
 
 <style scoped>
@@ -77,6 +135,11 @@ p {
 input {
   width: 100%;
 }
+#btn-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 #back-btn {
   max-width: max-content;
   align-self: center;
@@ -84,5 +147,9 @@ input {
 #play-btn {
   width: 10rem;
   align-self: center;
+}
+#warning {
+  width: 20rem;
+  color: red;
 }
 </style>
