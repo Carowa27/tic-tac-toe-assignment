@@ -56,6 +56,7 @@ function handleToggle(/*event: Event*/ i: number) {
       />
     </div>
     <div>players square</div>
+    <button>to be a reset btn</button>
     <div class="score-wrapper">
       <button @click="() => showHighscore()">Show scores</button>
       <section v-if="highscore">Highscores will show</section>
