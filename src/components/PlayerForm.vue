@@ -14,12 +14,14 @@ function goToStartScr() {
   playerScr.value = false;
 }
 
-let playerOneUsername = ref("");
-let playerTwoUsername = ref("");
 function goToGameScr() {
   playerScr.value = false;
   gameScr.value = true;
 }
+
+let playerOneUsername = ref("");
+let playerTwoUsername = ref("");
+
 let playerOneAlreadyExist = ref(false);
 let playerTwoAlreadyExist = ref(false);
 function checkUsernames(playerOneName: string, playerTwoName: string) {
@@ -46,10 +48,7 @@ function addPlayer(playerName: string) {
   console.log(playerName);
   let playerList: Player[] = getPlayerListFromLS();
   if (playerList.length !== 0) {
-    console.log(playerList);
     for (let i = 0; i < playerList.length; i++) {
-      console.log(playerList);
-      console.log(playerList[i].username);
       if (playerList[i].username === playerName) {
         console.log(playerList[i]);
       }
@@ -57,20 +56,14 @@ function addPlayer(playerName: string) {
   } else {
     let player = new Player(playerName);
     playerList.push(player);
-    console.log(playerList, player);
   }
   setPlayerListInLS(playerList);
   console.log(playerList);
   goToGameScr();
-  console.log("last in fn");
 
-  // if()
-  // let playerOne = new Player(playerOneName, 0);
-  // let playerTwo = new Player(playerTwoName, 0);
-  // //emit/prop till fullgame m usernames
-  // playerList.push(playerOne);
-  // playerList.push(playerTwo);
+  //emit/prop till fullgame m usernames
 }
+const players = [playerOneUsername, playerTwoUsername];
 </script>
 
 <template>

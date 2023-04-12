@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { Square } from "../models/Square";
 // A square for tictactoe
+interface IShowSquareProps {
+  square: Square;
+}
+
+defineProps<IShowSquareProps>();
 </script>
 
 <template>
-  <div class="game-square"></div>
+  <div class="game-square" @click.once="() => $emit('toggleClicked')"></div>
 </template>
 
 <style scoped>
@@ -13,6 +19,3 @@
   border: 1px solid black;
 }
 </style>
-<!-- :class="
-      playerOne.username === 'player1' ? 'clicked-by-p-one' : 'clicked-by-p-two'
-    " -->
