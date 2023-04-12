@@ -3,8 +3,9 @@ import { Player } from "./models/Player";
 // export function setActiveGameInLS(game:GAME){}
 // export function getActiveGameFromLS():GAME{}
 
-export function setPlayerListInLS(playerList: Player[]) {
-  localStorage.setItem("playerList", JSON.stringify(playerList));
+export function setPlayerListInLS(list: Player[]) {
+  console.log(list);
+  localStorage.setItem("playerList", JSON.stringify(list));
 }
 export function getPlayerListFromLS(): Player[] {
   let playerList: Player[] = [];
@@ -16,12 +17,9 @@ export function getPlayerListFromLS(): Player[] {
   } else {
     const parsedData = JSON.parse(storedPlayerList) as Player[];
     playerList = parsedData.map((getPlayer) => {
-      return new Player(getPlayer.username, getPlayer.wonGames);
+      return new Player(getPlayer.username);
     });
   }
-  if (playerList.length === 0) {
-    console.log("You don't have any scores nor players saved");
-  }
-
+  console.log(playerList);
   return playerList;
 }

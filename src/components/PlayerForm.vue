@@ -28,7 +28,6 @@ function checkUsernames(playerOneName: string, playerTwoName: string) {
 
   let playerList: Player[] = getPlayerListFromLS();
   for (let i = 0; i < playerList.length; i++) {
-    console.log(playerList[i]);
     if (playerList[i].username === playerOneName) {
       playerOneAlreadyExist.value = true;
     }
@@ -36,37 +35,41 @@ function checkUsernames(playerOneName: string, playerTwoName: string) {
       playerTwoAlreadyExist.value = true;
     }
   }
+  console.log(playerList);
 }
 function addPlayerNames(playerOneName: string, playerTwoName: string) {
-  console.log(playerOneName);
-  console.log(playerTwoName);
+  addPlayer(playerOneName);
+  addPlayer(playerTwoName);
+}
+
+function addPlayer(playerName: string) {
+  console.log(playerName);
   let playerList: Player[] = getPlayerListFromLS();
-  for (let i = 0; i < playerList.length; i++) {
-    console.log(playerList[i]);
-    if (playerList[i].username === playerOneName) {
-      return playerList[i];
-    } else {
-      let playerOne = new Player(playerOneName, 0);
-      playerList.push(playerOne);
-    }
-    if (playerList[i].username === playerTwoName) {
-      return playerList[i];
-    } else {
-      let playerTwo = new Player(playerTwoName, 0);
-      playerList.push(playerTwo);
-    }
+  if (playerList.length !== 0) {
     console.log(playerList);
-    goToGameScr();
-    console.log("last in fn");
+    for (let i = 0; i < playerList.length; i++) {
+      console.log(playerList);
+      console.log(playerList[i].username);
+      if (playerList[i].username === playerName) {
+        console.log(playerList[i]);
+      }
+    }
+  } else {
+    let player = new Player(playerName);
+    playerList.push(player);
+    console.log(playerList, player);
   }
+  setPlayerListInLS(playerList);
   console.log(playerList);
+  goToGameScr();
+  console.log("last in fn");
+
   // if()
   // let playerOne = new Player(playerOneName, 0);
   // let playerTwo = new Player(playerTwoName, 0);
   // //emit/prop till fullgame m usernames
   // playerList.push(playerOne);
   // playerList.push(playerTwo);
-  // setPlayerListInLS(playerList);
 }
 </script>
 
