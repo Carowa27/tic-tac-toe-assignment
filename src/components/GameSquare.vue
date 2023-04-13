@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { Square } from "../models/Square";
 // A square for tictactoe
 interface IShowSquareProps {
   square: Square;
 }
-
 defineProps<IShowSquareProps>();
 </script>
 
 <template>
-  <div class="game-square" @click.once="() => $emit('toggleClicked')"></div>
+  <div class="game-square" @click="() => $emit('toggleClicked')"></div>
 </template>
 
 <style scoped>
