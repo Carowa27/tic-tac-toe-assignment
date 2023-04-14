@@ -4,6 +4,7 @@ import FullGame from "./FullGame.vue";
 import StartScreen from "./StartScreen.vue";
 import { Player } from "../models/Player";
 import { getPlayerListFromLS, setPlayerListInLS } from "../localStorageFns";
+import { PlayerStats } from "../models/PlayerStats";
 // Form for player names
 let playerScr = ref(true);
 let startScr = ref(false);
@@ -24,6 +25,7 @@ let playerTwoUsername = ref("");
 
 let playerOneAlreadyExist = ref(false);
 let playerTwoAlreadyExist = ref(false);
+
 function checkUsernames(playerOneName: string, playerTwoName: string) {
   playerOneAlreadyExist.value = false;
   playerTwoAlreadyExist.value = false;
@@ -39,31 +41,161 @@ function checkUsernames(playerOneName: string, playerTwoName: string) {
   }
   console.log(playerList);
 }
-function addPlayerNames(playerOneName: string, playerTwoName: string) {
-  addPlayer(playerOneName);
-  addPlayer(playerTwoName);
-}
+// function addPlayerNames(playerOneName: string, playerTwoName: string) {
+//   addPlayer(playerOneName);
+//   addPlayer(playerTwoName);
+// }
 
-function addPlayer(playerName: string) {
-  console.log(playerName);
+let players: Player[] = [];
+function addPlayerOne(playerName: string) {
   let playerList: Player[] = getPlayerListFromLS();
+  console.log(playerList);
   if (playerList.length !== 0) {
     for (let i = 0; i < playerList.length; i++) {
+      console.log(playerList[i], i);
       if (playerList[i].username === playerName) {
-        console.log(playerList[i]);
+        players.push(playerList[i]);
+
+        console.log("added", playerList[i], "to Game");
+      } else {
+        const newPlayer = new Player(playerName);
+        // playerList.push(newPlayer);
+        // setPlayerListInLS(playerList);
+        players.push(newPlayer);
+
+        console.log("added", newPlayer, "to Game & LS");
+
+        console.log("players list", players);
+        console.log("LS list", playerList);
       }
     }
   } else {
-    let player = new Player(playerName);
-    playerList.push(player);
-  }
-  setPlayerListInLS(playerList);
-  console.log(playerList);
-  goToGameScr();
+    const newPlayer = new Player(playerName);
+    // playerList.push(newPlayer);
+    // setPlayerListInLS(playerList);
+    players.push(newPlayer);
 
-  //emit/prop till fullgame m usernames
+    console.log("added", newPlayer, "to Game & LS");
+
+    console.log("players list", players);
+    console.log("LS list", playerList);
+  }
 }
-const players = [playerOneUsername, playerTwoUsername];
+function addPlayerTwo(playerName: string) {
+  let playerList: Player[] = getPlayerListFromLS();
+  console.log(playerList);
+  if (playerList.length !== 0) {
+    for (let i = 0; i < playerList.length; i++) {
+      //minst en gång i loopen är fel vilket gör att den kommer att lägga till för många
+      console.log(playerList[i], i);
+      if (playerList[i].username === playerName) {
+        players.push(playerList[i]);
+
+        console.log("added", playerList[i], "to Game");
+      } else {
+        const newPlayer = new Player(playerName);
+        // playerList.push(newPlayer);
+        // setPlayerListInLS(playerList);
+        players.push(newPlayer);
+
+        console.log("added", newPlayer, "to Game & LS");
+
+        console.log("players list", players);
+        console.log("LS list", playerList);
+      }
+    }
+  } else {
+    const newPlayer = new Player(playerName);
+    const newPlayerWStats = new PlayerStats(newPlayer, 0);
+    // playerList.push(newPlayer);
+    // setPlayerListInLS(playerList);
+    players.push(newPlayer);
+
+    console.log("added", newPlayer, "to Game & LS");
+
+    console.log("players list", players);
+    console.log("LS list", playerList);
+  }
+}
+// for (let i = 0; i < playersToAdd.length; i++) {
+//   // let playerInLoop = playersToAdd[i];
+//   // console.log(playersToAdd[i], i);
+//   console.log(playersToAdd);
+//   console.log(playerList);
+//   if (playerList.length !== 0) {
+//     console.log("if");
+//     for (let i = 0; i < playerList.length; i++) {
+//       // console.log(playerList[i]);
+//       // console.log(playersToAdd[i]);
+//       if (
+//         playerList[i].username === playerNameOne ||
+//         playerList[i].username === playerNameTwo
+//       ) {
+//         if (playerList[i].username === playerNameOne) {
+//           console.log("loop playerList if");
+//           players.push(playerList[i]);
+
+//           console.log(players);
+//         } else {
+//           console.log("loop playerList if");
+//           players.push(playerList[i]);
+
+//           console.log(players);
+//         }
+//       } else {
+//         console.log("loop playerList else");
+//         const newPlayer = new Player(playersToAdd[i]);
+//         playerList.push(newPlayer);
+//         setPlayerListInLS(playerList);
+//         players.push(newPlayer);
+
+//         console.log(newPlayer);
+//         console.log(players);
+//         console.log(playerList);
+//       }
+//     }
+//   } else {
+//     console.log("else");
+//     const newPlayerOne = new Player(playerNameOne);
+//     const newPlayerTwo = new Player(playerNameTwo);
+//     playerList.push(newPlayerOne);
+//     playerList.push(newPlayerTwo);
+//     setPlayerListInLS(playerList);
+//     players.push(newPlayerOne);
+//     players.push(newPlayerTwo);
+
+//     console.log(newPlayerOne);
+//     console.log(newPlayerTwo);
+//     console.log(players);
+//     console.log(playerList);
+//   }
+// }
+
+// function addPlayerTwo(playerName: string) {
+//   console.log(playerName);
+//   let playerList: Player[] = getPlayerListFromLS();
+//   if (playerList.length !== 0) {
+//     for (let i = 0; i < playerList.length; i++) {
+//       if (playerList[i].username === playerName) {
+//         console.log(playerList[i]);
+//         players.push(playerList[i]);
+//         console.log(players);
+//         console.log(playerList);
+//         return players;
+//       }
+//     }
+//   } else {
+//     let player = new Player(playerName);
+//     playerList.push(player);
+//     players.push(player);
+//     console.log(players);
+//     console.log(playerList);
+//     setPlayerListInLS(playerList);
+//     return players;
+//   }
+// goToGameScr();
+//emit/prop till fullgame m usernames
+// }
 </script>
 
 <template>
@@ -71,7 +203,11 @@ const players = [playerOneUsername, playerTwoUsername];
     <h3>Who is playing?</h3>
     <form
       @submit.prevent="
-        () => addPlayerNames(playerOneUsername, playerTwoUsername)
+        () => (
+          addPlayerOne(playerOneUsername),
+          addPlayerTwo(playerTwoUsername),
+          goToGameScr()
+        )
       "
     >
       <label for="player-one">
@@ -109,7 +245,7 @@ const players = [playerOneUsername, playerTwoUsername];
     <button id="back-btn" @click="() => goToStartScr()">Back to Start</button>
   </section>
   <StartScreen v-if="startScr" />
-  <FullGame v-if="gameScr" />
+  <FullGame :players="players" v-if="gameScr" />
 </template>
 
 <style scoped>
