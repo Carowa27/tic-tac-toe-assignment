@@ -11,7 +11,7 @@ import { Player } from "../models/Player";
 interface IPlayersProps {
   players: Player[];
 }
-defineProps<IPlayersProps>();
+let gamers = defineProps<IPlayersProps>();
 let startScr = ref(false);
 let gameScr = ref(true);
 
@@ -42,7 +42,7 @@ function handleToggle(/*event: Event*/ i: number) {
       clickedSquare.classList.add("clicked-by-p-one");
       const addImg = document.createElement("img");
       addImg.src =
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png";
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/94.png";
       addImg.alt = "gengar";
       addImg.id = "gengar";
       clickedSquare.appendChild(addImg);
@@ -51,7 +51,7 @@ function handleToggle(/*event: Event*/ i: number) {
       clickedSquare.classList.add("clicked-by-p-two");
       const addImg = document.createElement("img");
       addImg.src =
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png";
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/7.png";
       addImg.alt = "squirtle";
       addImg.id = "squirtle";
       clickedSquare.appendChild(addImg);
@@ -76,7 +76,7 @@ function resetGame() {
   }
 }
 let gotWinner = ref(false);
-
+let winner = ref();
 function startGameFn() {
   let allClicked =
     board.value[0].clicked &&
@@ -164,6 +164,7 @@ function startGameFn() {
   ) {
     console.log("Congratulations,player1!");
     gotWinner.value = true;
+    winner.value = gamers.players[0];
   }
   if (
     rowOnePTwo ||
@@ -177,6 +178,7 @@ function startGameFn() {
   ) {
     console.log("Congratulations,player2!");
     gotWinner.value = true;
+    winner.value = gamers.players[1];
   }
   if (allClicked) {
     console.log("no winner this time");
@@ -219,7 +221,7 @@ function startGameFn() {
     <button id="back-btn" @click="() => goToStartScr()">Back to Start</button>
   </section>
   <StartScreen v-if="startScr" />
-  <WinnerModal v-if="gotWinner" />
+  <WinnerModal :players="players" :winner="winner" v-if="gotWinner" />
 </template>
 
 <style scoped>
