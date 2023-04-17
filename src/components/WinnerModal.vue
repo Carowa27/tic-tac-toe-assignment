@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Player } from "../models/Player";
 import { Square } from "../models/Square";
 import { resetGame } from "../resetGameFn";
@@ -15,6 +15,7 @@ interface IWinnerProps {
 }
 let playerInfo = defineProps<IWinnerProps>();
 
+defineEmits(["startNewGame"]);
 // let whoIswinner = "";
 // console.log(playerInfo.players[0].username);
 // console.log(playerInfo.winner.username);
@@ -32,6 +33,7 @@ function goToGameScr() {
   winnerModal.value = false;
   gameScr.value = true;
 }
+let players = playerInfo.players;
 </script>
 <template>
   <section class="modal" v-if="winnerModal">
@@ -58,17 +60,7 @@ function goToGameScr() {
           <p>You won the game!</p>
         </section>
         <section class="btn-wrapper">
-          <button
-            @click="
-              resetGame(
-                playerInfo.board,
-                playerInfo.player1,
-                playerInfo.gotWinner,
-                playerInfo.endGame
-              ),
-                goToGameScr()
-            "
-          >
+          <button @click="() => ($emit('startNewGame'), goToGameScr())">
             new game
           </button>
           <button>highscores</button>
@@ -76,13 +68,13 @@ function goToGameScr() {
       </section>
     </div>
   </section>
-  <FullGame :players="players" v-if="gameScr" />
+  <!-- <FullGame :players="players" v-if="gameScr" /> -->
 </template>
 <style scoped>
 .modal {
   position: fixed;
   /* z-index: 1; */
-  padding-top: 50%; /*location of box on screen */
+  padding-top: 50vh; /*location of box on screen */
   left: 0;
   top: 0;
   width: 100%; /*Full width */
@@ -99,7 +91,7 @@ function goToGameScr() {
   min-width: fit-content;
   width: 25rem;
   height: 15rem;
-  transform: translate(0, -100%);
+  transform: translate(0, -50%);
   display: flex;
   padding: 2rem;
   justify-content: space-evenly;

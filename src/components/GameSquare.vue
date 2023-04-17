@@ -9,7 +9,7 @@ defineProps<IShowSquareProps>();
 </script>
 
 <template>
-  <div class="game-square" @click="() => $emit('toggleClicked')"></div>
+  <div class="game-square" @click.once="() => $emit('toggleClicked')"></div>
 </template>
 
 <style scoped>

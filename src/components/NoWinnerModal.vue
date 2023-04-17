@@ -54,7 +54,7 @@ function goToGameScr() {
       </section>
     </div>
   </section>
-  <FullGame :players="players" v-if="gameScr" />
+  <!-- <FullGame :players="playerInfo.players" v-if="gameScr" /> -->
 </template>
 <style scoped>
 .modal {

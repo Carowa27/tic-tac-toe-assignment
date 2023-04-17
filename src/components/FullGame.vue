@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // The full game with all the squares
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import GameSquare from "./GameSquare.vue";
 import StartScreen from "./StartScreen.vue";
 import WinnerModal from "./WinnerModal.vue";
@@ -13,7 +13,7 @@ import { resetGame } from "../resetGameFn";
 interface IPlayersProps {
   players: Player[];
 }
-let gamers = defineProps<IPlayersProps>();
+let activePlayers = defineProps<IPlayersProps>();
 
 let startScr = ref(false);
 let gameScr = ref(true);
@@ -65,19 +65,6 @@ function handleToggle(/*event: Event*/ i: number) {
   console.log(clickedSquare.classList.contains("clicked-by-p-one"));
 }
 
-// function resetGame() {
-//   console.log("reset btn clicked");
-//   for (let i = 0; i < board.value.length; i++) {
-//     let clickedSquare = document.getElementById(i.toString()) as HTMLDivElement;
-//     clickedSquare.classList.remove("clicked-by-p-one");
-//     clickedSquare.classList.remove("clicked-by-p-two");
-//     clickedSquare.innerText = "";
-
-//     player1.value = true;
-//     board.value[i].clicked = false;
-//     board.value[i].clickedBy = Clicker.None;
-//   }
-// }
 let gotWinner = ref(false);
 let endGame = ref(false);
 let winner = ref();
@@ -168,7 +155,8 @@ function startGameFn() {
   ) {
     console.log("Congratulations,player1!");
     gotWinner.value = true;
-    winner.value = gamers.players[0];
+    winner.value = activePlayers.players[0];
+    gameScr.value = false;
   }
   if (
     rowOnePTwo ||
@@ -182,13 +170,35 @@ function startGameFn() {
   ) {
     console.log("Congratulations,player2!");
     gotWinner.value = true;
-    winner.value = gamers.players[1];
+    winner.value = activePlayers.players[1];
+    gameScr.value = false;
   }
   if (allClicked) {
     console.log("no winner this time");
     endGame.value = true;
+    gameScr.value = false;
   }
 }
+
+function startNewGame() {
+  resetGame(board.value, player1.value, gotWinner.value, endGame.value);
+
+  gameScr.value = true;
+  endGame.value = false;
+  gotWinner.value = false;
+}
+onMounted(() => {
+  console.log(
+    "player1:",
+    player1.value,
+    "board:",
+    board.value,
+    "gotWinner:",
+    gotWinner.value,
+    "endGame:",
+    endGame.value
+  );
+});
 </script>
 <template>
   <section class="game-wrapper" v-if="gameScr">
@@ -239,6 +249,7 @@ function startGameFn() {
     :players="players"
     :winner="winner"
     v-if="gotWinner"
+    @start-new-game="startNewGame"
   />
   <NoWinnerModal
     :players="players"

@@ -13,19 +13,21 @@ export function resetGame(
   let endGame = ref(endOfGameWithNoWinner);
   console.log("reset btn clicked");
   for (let i = 0; i < board.value.length; i++) {
-    let clickedSquare = document.getElementById(i.toString()) as HTMLDivElement;
-    clickedSquare.classList.remove("clicked-by-p-one");
-    clickedSquare.classList.remove("clicked-by-p-two");
-    clickedSquare.innerText = "";
+    //   let clickedSquare = document.getElementById(i.toString()) as HTMLDivElement;
+    // clickedSquare.classList.remove("clicked-by-p-one");
+    // clickedSquare.classList.remove("clicked-by-p-two");
+    // clickedSquare.innerText = "";
 
-    player1.value = true;
     board.value[i].clicked = false;
     board.value[i].clickedBy = Clicker.None;
-    gotWinner.value = false;
-    endGame.value = false;
   }
+  player1.value = true;
+  gotWinner.value = false;
+  endGame.value = false;
   let returnObject = { player1, board, gotWinner, endGame };
   console.log(returnObject.board.value);
   console.log(returnObject.player1.value);
+  console.log(returnObject.gotWinner.value);
+  console.log(returnObject.endGame.value);
   return returnObject;
 }
