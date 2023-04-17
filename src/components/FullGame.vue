@@ -61,6 +61,7 @@ function handleToggle(/*event: Event*/ i: number) {
   console.log(board.value);
   console.log(clickedSquare.classList.contains("clicked-by-p-one"));
 }
+
 function resetGame() {
   console.log("reset btn clicked");
   for (let i = 0; i < board.value.length; i++) {
@@ -75,7 +76,18 @@ function resetGame() {
   }
 }
 let gotWinner = ref(false);
+
 function startGameFn() {
+  let allClicked =
+    board.value[0].clicked &&
+    board.value[1].clicked &&
+    board.value[2].clicked &&
+    board.value[3].clicked &&
+    board.value[4].clicked &&
+    board.value[5].clicked &&
+    board.value[6].clicked &&
+    board.value[7].clicked &&
+    board.value[8].clicked;
   const rowOnePOne =
     board.value[0].clickedBy === Clicker.Player1 &&
     board.value[1].clickedBy === Clicker.Player1 &&
@@ -166,7 +178,9 @@ function startGameFn() {
     console.log("Congratulations,player2!");
     gotWinner.value = true;
   }
-  //add a "No win this time" when all is clicked but no one won
+  if (allClicked) {
+    console.log("no winner this time");
+  }
 }
 </script>
 <template>
