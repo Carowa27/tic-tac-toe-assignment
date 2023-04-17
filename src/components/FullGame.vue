@@ -258,6 +258,7 @@ onMounted(() => {
     :player1="player1"
     :board="board"
     v-if="endGame"
+    @start-new-game="startNewGame"
   />
 </template>
 

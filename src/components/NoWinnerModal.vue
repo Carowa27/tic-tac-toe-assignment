@@ -28,30 +28,20 @@ function goToGameScr() {
         alt="gengar"
         id="gengar"
       />
-      <img
-        src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/7.gif"
-        alt="squirtle"
-        id="squirtle"
-      />
       <section class="info-wrapper">
         <p>No one won this game, try again!</p>
         <section class="btn-wrapper">
-          <button
-            @click="
-              resetGame(
-                playerInfo.board,
-                playerInfo.player1,
-                playerInfo.gotWinner,
-                playerInfo.endGame
-              ),
-                goToGameScr()
-            "
-          >
+          <button @click="() => ($emit('startNewGame'), goToGameScr())">
             new game
           </button>
           <button>highscores</button>
         </section>
       </section>
+      <img
+        src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/7.gif"
+        alt="squirtle"
+        id="squirtle"
+      />
     </div>
   </section>
   <!-- <FullGame :players="playerInfo.players" v-if="gameScr" /> -->
@@ -60,7 +50,7 @@ function goToGameScr() {
 .modal {
   position: fixed;
   /* z-index: 1; */
-  padding-top: 50%; /*location of box on screen */
+  padding-top: 50vh; /*location of box on screen */
   left: 0;
   top: 0;
   width: 100%; /*Full width */
@@ -77,7 +67,7 @@ function goToGameScr() {
   min-width: fit-content;
   width: 25rem;
   height: 15rem;
-  transform: translate(0, -100%);
+  transform: translate(0, -50%);
   display: flex;
   padding: 2rem;
   justify-content: space-evenly;
@@ -109,7 +99,7 @@ button {
 }
 #squirtle {
   width: 5rem;
-  transform: scaleX(-1);
+  /* transform: scaleX(-1); */
   align-self: center;
   margin: 1rem;
 }
