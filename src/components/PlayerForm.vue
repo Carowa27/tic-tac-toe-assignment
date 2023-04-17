@@ -47,7 +47,8 @@ function checkUsernames(playerOneName: string, playerTwoName: string) {
 // }
 
 let players: Player[] = [];
-function addPlayerOne(playerName: string) {
+
+function addPlayerOne(playerName: string): Player[] {
   let playerList: Player[] = getPlayerListFromLS();
   console.log(playerList);
   if (playerList.length !== 0) {
@@ -57,6 +58,7 @@ function addPlayerOne(playerName: string) {
         players.push(playerList[i]);
 
         console.log("added", playerList[i], "to Game");
+        return players;
       } else {
         const newPlayer = new Player(playerName);
         // playerList.push(newPlayer);
@@ -67,41 +69,7 @@ function addPlayerOne(playerName: string) {
 
         console.log("players list", players);
         console.log("LS list", playerList);
-      }
-    }
-  } else {
-    const newPlayer = new Player(playerName);
-    // playerList.push(newPlayer);
-    // setPlayerListInLS(playerList);
-    players.push(newPlayer);
-
-    console.log("added", newPlayer, "to Game & LS");
-
-    console.log("players list", players);
-    console.log("LS list", playerList);
-  }
-}
-function addPlayerTwo(playerName: string) {
-  let playerList: Player[] = getPlayerListFromLS();
-  console.log(playerList);
-  if (playerList.length !== 0) {
-    for (let i = 0; i < playerList.length; i++) {
-      //minst en gång i loopen är fel vilket gör att den kommer att lägga till för många
-      console.log(playerList[i], i);
-      if (playerList[i].username === playerName) {
-        players.push(playerList[i]);
-
-        console.log("added", playerList[i], "to Game");
-      } else {
-        const newPlayer = new Player(playerName);
-        // playerList.push(newPlayer);
-        // setPlayerListInLS(playerList);
-        players.push(newPlayer);
-
-        console.log("added", newPlayer, "to Game & LS");
-
-        console.log("players list", players);
-        console.log("LS list", playerList);
+        return players;
       }
     }
   } else {
@@ -116,86 +84,47 @@ function addPlayerTwo(playerName: string) {
     console.log("players list", players);
     console.log("LS list", playerList);
   }
+  return players;
 }
-// for (let i = 0; i < playersToAdd.length; i++) {
-//   // let playerInLoop = playersToAdd[i];
-//   // console.log(playersToAdd[i], i);
-//   console.log(playersToAdd);
-//   console.log(playerList);
-//   if (playerList.length !== 0) {
-//     console.log("if");
-//     for (let i = 0; i < playerList.length; i++) {
-//       // console.log(playerList[i]);
-//       // console.log(playersToAdd[i]);
-//       if (
-//         playerList[i].username === playerNameOne ||
-//         playerList[i].username === playerNameTwo
-//       ) {
-//         if (playerList[i].username === playerNameOne) {
-//           console.log("loop playerList if");
-//           players.push(playerList[i]);
+function addPlayerTwo(playerName: string): Player[] {
+  let playerList: Player[] = getPlayerListFromLS();
+  console.log(playerList);
+  if (playerList.length !== 0) {
+    for (let i = 0; i < playerList.length; i++) {
+      //minst en gång i loopen är fel vilket gör att den kommer att lägga till för många
+      console.log(playerList[i], i);
+      if (playerList[i].username === playerName) {
+        players.push(playerList[i]);
 
-//           console.log(players);
-//         } else {
-//           console.log("loop playerList if");
-//           players.push(playerList[i]);
+        console.log("added", playerList[i], "to Game");
+        return players;
+      } else {
+        const newPlayer = new Player(playerName);
+        // playerList.push(newPlayer);
+        // setPlayerListInLS(playerList);
+        players.push(newPlayer);
 
-//           console.log(players);
-//         }
-//       } else {
-//         console.log("loop playerList else");
-//         const newPlayer = new Player(playersToAdd[i]);
-//         playerList.push(newPlayer);
-//         setPlayerListInLS(playerList);
-//         players.push(newPlayer);
+        console.log("added", newPlayer, "to Game & LS");
 
-//         console.log(newPlayer);
-//         console.log(players);
-//         console.log(playerList);
-//       }
-//     }
-//   } else {
-//     console.log("else");
-//     const newPlayerOne = new Player(playerNameOne);
-//     const newPlayerTwo = new Player(playerNameTwo);
-//     playerList.push(newPlayerOne);
-//     playerList.push(newPlayerTwo);
-//     setPlayerListInLS(playerList);
-//     players.push(newPlayerOne);
-//     players.push(newPlayerTwo);
+        console.log("players list", players);
+        console.log("LS list", playerList);
+        return players;
+      }
+    }
+  } else {
+    const newPlayer = new Player(playerName);
+    const newPlayerWStats = new PlayerStats(newPlayer, 0);
+    // playerList.push(newPlayer);
+    // setPlayerListInLS(playerList);
+    players.push(newPlayer);
 
-//     console.log(newPlayerOne);
-//     console.log(newPlayerTwo);
-//     console.log(players);
-//     console.log(playerList);
-//   }
-// }
+    console.log("added", newPlayer, "to Game & LS");
 
-// function addPlayerTwo(playerName: string) {
-//   console.log(playerName);
-//   let playerList: Player[] = getPlayerListFromLS();
-//   if (playerList.length !== 0) {
-//     for (let i = 0; i < playerList.length; i++) {
-//       if (playerList[i].username === playerName) {
-//         console.log(playerList[i]);
-//         players.push(playerList[i]);
-//         console.log(players);
-//         console.log(playerList);
-//         return players;
-//       }
-//     }
-//   } else {
-//     let player = new Player(playerName);
-//     playerList.push(player);
-//     players.push(player);
-//     console.log(players);
-//     console.log(playerList);
-//     setPlayerListInLS(playerList);
-//     return players;
-//   }
-// goToGameScr();
-//emit/prop till fullgame m usernames
-// }
+    console.log("players list", players);
+    console.log("LS list", playerList);
+  }
+  return players;
+}
 </script>
 
 <template>
@@ -205,16 +134,23 @@ function addPlayerTwo(playerName: string) {
       @submit.prevent="
         () => (
           addPlayerOne(playerOneUsername),
-          addPlayerTwo(playerTwoUsername),
+          addPlayerOne(playerTwoUsername),
           goToGameScr()
         )
       "
     >
-      <label for="player-one">
-        <p>
-          Player1 ->
-          <b>{{ playerOneUsername }}</b>
-        </p>
+      <label for="player-one"
+        ><section class="label-row">
+          <img
+            id="label-gengar"
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/94.png"
+            alt="gengar"
+          />
+          <p>
+            Player1 ->
+            <b>{{ playerOneUsername }}</b>
+          </p>
+        </section>
         <p id="warning" v-if="playerOneAlreadyExist">
           Username already exist, if you want to continue using this profile,
           press play, or choose another username
@@ -222,9 +158,16 @@ function addPlayerTwo(playerName: string) {
         <input type="text" id="player-one" v-model="playerOneUsername" />
       </label>
       <label for="player-two"
-        ><p>
-          Player2 -> <b>{{ playerTwoUsername }}</b>
-        </p>
+        ><section class="label-row">
+          <img
+            id="label-squirtle"
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/7.png"
+            alt="squirtle"
+          />
+          <p>
+            Player2 -> <b>{{ playerTwoUsername }}</b>
+          </p>
+        </section>
         <p id="warning" v-if="playerTwoAlreadyExist">
           Username already exist, if you want to continue using this profile,
           press play, or choose another username
@@ -283,5 +226,19 @@ input {
 #warning {
   width: 20rem;
   color: red;
+}
+.label-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+#label-gengar {
+  height: 2rem;
+  margin: 0 0.4rem;
+  transform: scaleX(-1);
+}
+#label-squirtle {
+  height: 2.8rem;
+  transform: scaleX(-1);
 }
 </style>

@@ -7,11 +7,14 @@ import WinnerModal from "./WinnerModal.vue";
 import { gameSquareList } from "../squareList";
 import { Clicker, Square } from "../models/Square";
 import { Player } from "../models/Player";
+import NoWinnerModal from "./NoWinnerModal.vue";
+import { resetGame } from "../resetGameFn";
 
 interface IPlayersProps {
   players: Player[];
 }
 let gamers = defineProps<IPlayersProps>();
+
 let startScr = ref(false);
 let gameScr = ref(true);
 
@@ -62,20 +65,21 @@ function handleToggle(/*event: Event*/ i: number) {
   console.log(clickedSquare.classList.contains("clicked-by-p-one"));
 }
 
-function resetGame() {
-  console.log("reset btn clicked");
-  for (let i = 0; i < board.value.length; i++) {
-    let clickedSquare = document.getElementById(i.toString()) as HTMLDivElement;
-    clickedSquare.classList.remove("clicked-by-p-one");
-    clickedSquare.classList.remove("clicked-by-p-two");
-    clickedSquare.innerText = "";
+// function resetGame() {
+//   console.log("reset btn clicked");
+//   for (let i = 0; i < board.value.length; i++) {
+//     let clickedSquare = document.getElementById(i.toString()) as HTMLDivElement;
+//     clickedSquare.classList.remove("clicked-by-p-one");
+//     clickedSquare.classList.remove("clicked-by-p-two");
+//     clickedSquare.innerText = "";
 
-    player1.value = true;
-    board.value[i].clicked = false;
-    board.value[i].clickedBy = Clicker.None;
-  }
-}
+//     player1.value = true;
+//     board.value[i].clicked = false;
+//     board.value[i].clickedBy = Clicker.None;
+//   }
+// }
 let gotWinner = ref(false);
+let endGame = ref(false);
 let winner = ref();
 function startGameFn() {
   let allClicked =
@@ -182,6 +186,7 @@ function startGameFn() {
   }
   if (allClicked) {
     console.log("no winner this time");
+    endGame.value = true;
   }
 }
 </script>
@@ -213,7 +218,12 @@ function startGameFn() {
         </p>
       </div>
     </section>
-    <button id="reset-btn" @click="() => resetGame()">Reset Game</button>
+    <button
+      id="reset-btn"
+      @click="() => resetGame(board, player1, gotWinner, endGame)"
+    >
+      Reset Game
+    </button>
     <div class="score-wrapper">
       <button @click="() => showHighscore()">Show scores</button>
       <section v-if="highscore">Highscores will show</section>
@@ -221,7 +231,23 @@ function startGameFn() {
     <button id="back-btn" @click="() => goToStartScr()">Back to Start</button>
   </section>
   <StartScreen v-if="startScr" />
-  <WinnerModal :players="players" :winner="winner" v-if="gotWinner" />
+  <WinnerModal
+    :got-winner="gotWinner"
+    :end-game="endGame"
+    :player1="player1"
+    :board="board"
+    :players="players"
+    :winner="winner"
+    v-if="gotWinner"
+  />
+  <NoWinnerModal
+    :players="players"
+    :got-winner="gotWinner"
+    :end-game="endGame"
+    :player1="player1"
+    :board="board"
+    v-if="endGame"
+  />
 </template>
 
 <style scoped>
@@ -271,7 +297,10 @@ function startGameFn() {
 .score-wrapper {
   margin-top: 2rem;
 }
-#gengar,
+#gengar {
+  max-width: 100%;
+}
+
 #squirtle {
   max-width: 100%;
 }
