@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { Player } from "../models/Player";
 import { Square } from "../models/Square";
-import { resetGame } from "../resetGameFn";
 
 //send winner player
 interface IWinnerProps {
@@ -16,17 +15,7 @@ interface IWinnerProps {
 let playerInfo = defineProps<IWinnerProps>();
 
 defineEmits(["startNewGame"]);
-// let whoIswinner = "";
-// console.log(playerInfo.players[0].username);
-// console.log(playerInfo.winner.username);
-// if (playerInfo.winner === playerInfo.players[0]) {
-//   console.log("player 1 is the winner");
-//   whoIswinner = "player1";
-// }
-// if (playerInfo.winner === playerInfo.players[1]) {
-//   console.log("player 2 is the winner");
-//   whoIswinner = "player2";
-// }
+
 let gameScr = ref(false);
 let winnerModal = ref(true);
 function goToGameScr() {
@@ -68,17 +57,15 @@ let players = playerInfo.players;
       </section>
     </div>
   </section>
-  <!-- <FullGame :players="players" v-if="gameScr" /> -->
 </template>
 <style scoped>
 .modal {
   position: fixed;
-  /* z-index: 1; */
-  padding-top: 50vh; /*location of box on screen */
+  padding-top: 50vh;
   left: 0;
   top: 0;
-  width: 100%; /*Full width */
-  height: 100%; /* Full height */
+  width: 100%;
+  height: 100%;
   background-color: rgba(119, 119, 119, 0.944);
 }
 .modal-content {

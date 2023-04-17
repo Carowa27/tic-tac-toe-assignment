@@ -3,25 +3,32 @@ import { ref } from "vue";
 import { Player } from "../models/Player";
 import { Square } from "../models/Square";
 
-interface INoWinnerProps {
-  players: Player[];
-  player1: boolean;
-  board: Square[];
-  gotWinner: boolean;
-  endGame: boolean;
-}
-let playerInfo = defineProps<INoWinnerProps>();
+// interface IWinnerProps {
+//   players: Player[];
+//   winner: Player;
+//   player1: boolean;
+//   board: Square[];
+//   gotWinner: boolean;
+//   endGame: boolean;
+// }
+// let playerInfo = defineProps<IWinnerProps>();
 
+defineEmits(["startNewGame", "goToStart"]);
+
+let startScr = ref(false);
 let gameScr = ref(false);
-let noWinnerModal = ref(true);
-
+let newGameModal = ref(true);
 function goToGameScr() {
-  noWinnerModal.value = false;
+  newGameModal.value = false;
   gameScr.value = true;
 }
+// function goToStartScr() {
+//   startScr.value = true;
+//   newGameModal.value = false;
+// }
 </script>
 <template>
-  <section class="modal" v-if="noWinnerModal">
+  <section class="modal" v-if="newGameModal">
     <div class="modal-content">
       <img
         src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/94.gif"
@@ -34,7 +41,9 @@ function goToGameScr() {
           <button @click="() => ($emit('startNewGame'), goToGameScr())">
             new game
           </button>
-          <button>highscores</button>
+          <button @click="() => ($emit('goToStart'), goToGameScr())">
+            back to start
+          </button>
         </section>
       </section>
       <img
@@ -44,6 +53,7 @@ function goToGameScr() {
       />
     </div>
   </section>
+  <StartScreen v-if="startScr" />
 </template>
 <style scoped>
 .modal {
@@ -58,7 +68,7 @@ function goToGameScr() {
 .modal-content {
   background-color: rgb(53, 53, 53);
   color: rgb(255, 255, 255);
-  border: 2px solid rgb(248, 56, 56);
+  border: 2px solid rgb(148, 255, 148);
   margin: auto;
   padding: 10px;
   border-radius: 10px;
@@ -97,6 +107,7 @@ button {
 }
 #squirtle {
   width: 5rem;
+  /* transform: scaleX(-1); */
   align-self: center;
   margin: 1rem;
 }

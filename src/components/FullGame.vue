@@ -8,12 +8,14 @@ import { gameSquareList } from "../squareList";
 import { Clicker, Square } from "../models/Square";
 import { Player } from "../models/Player";
 import NoWinnerModal from "./NoWinnerModal.vue";
-import { resetGame } from "../resetGameFn";
+import NewGameModal from "./NewGameModal.vue";
 
 interface IPlayersProps {
   players: Player[];
 }
 let activePlayers = defineProps<IPlayersProps>();
+
+defineEmits(["goToStart"]);
 
 let startScr = ref(false);
 let gameScr = ref(true);
@@ -181,24 +183,22 @@ function startGameFn() {
 }
 
 function startNewGame() {
-  resetGame(board.value, player1.value, gotWinner.value, endGame.value);
+  console.log("Reset btn clicked");
+  for (let i = 0; i < board.value.length; i++) {
+    console.log("in loop");
+    board.value[i].clicked = false;
+    board.value[i].clickedBy = Clicker.None;
+    // let clickedSquare = document.getElementById(i.toString()) as HTMLDivElement;
+    // clickedSquare.classList.remove("clicked-by-p-one");
+    // clickedSquare.classList.remove("clicked-by-p-two");
+    // clickedSquare.innerText = "";
+  }
 
-  gameScr.value = true;
   endGame.value = false;
   gotWinner.value = false;
+  gameScr.value = true;
 }
-onMounted(() => {
-  console.log(
-    "player1:",
-    player1.value,
-    "board:",
-    board.value,
-    "gotWinner:",
-    gotWinner.value,
-    "endGame:",
-    endGame.value
-  );
-});
+let resetClicked = ref(false);
 </script>
 <template>
   <section class="game-wrapper" v-if="gameScr">
@@ -219,25 +219,30 @@ onMounted(() => {
         />
       </div>
       <div class="player-wrapper">
-        <b> <span>username</span><span>wins</span> </b>
+        <b> <span>username</span> </b>
         <p class="player-stat">
+          <img
+            id="user-gengar"
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/94.png"
+            alt="gengar"
+          />
           <span>{{ players[0].username }}</span>
         </p>
         <p class="player-stat">
+          <img
+            id="user-squirtle"
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/7.png"
+            alt="squirtle"
+          />
           <span>{{ players[1].username }}</span>
         </p>
       </div>
     </section>
-    <button
-      id="reset-btn"
-      @click="() => resetGame(board, player1, gotWinner, endGame)"
-    >
-      Reset Game
-    </button>
-    <div class="score-wrapper">
+    <!-- <button id="reset-btn" @click="resetClicked = true">Reset Game</button> -->
+    <!-- <div class="score-wrapper">
       <button @click="() => showHighscore()">Show scores</button>
       <section v-if="highscore">Highscores will show</section>
-    </div>
+    </div> -->
     <button id="back-btn" @click="() => goToStartScr()">Back to Start</button>
   </section>
   <StartScreen v-if="startScr" />
@@ -260,6 +265,11 @@ onMounted(() => {
     v-if="endGame"
     @start-new-game="startNewGame"
   />
+  <!-- <NewGameModal
+    v-if="resetClicked"
+    @start-new-game="startNewGame"
+    @go-to-start="goToStartScr"
+  /> -->
 </template>
 
 <style scoped>
@@ -267,10 +277,10 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid greenyellow;
+  /* border: 2px solid greenyellow; */
 }
 .game-mat {
-  border: 2px solid lightblue;
+  /* border: 2px solid lightblue; */
   display: flex;
 }
 .turn-teller {
@@ -285,7 +295,7 @@ onMounted(() => {
   gap: 0;
 }
 .player-wrapper {
-  border: 2px solid violet;
+  /* border: 2px solid violet; */
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -295,7 +305,10 @@ onMounted(() => {
 .player-stat {
   margin: 0;
   padding-top: 0.3rem;
+  width: 75%;
   border-bottom: 1px solid rgb(95, 95, 95);
+  display: flex;
+  align-items: center;
 }
 .clicked-by-none {
   background-color: rgba(135, 135, 135, 0.473);
@@ -316,8 +329,17 @@ onMounted(() => {
 #squirtle {
   max-width: 100%;
 }
+#user-gengar {
+  height: 2rem;
+  margin: 0 0.4rem;
+  transform: scaleX(-1);
+}
+#user-squirtle {
+  height: 2.8rem;
+  transform: scaleX(-1);
+}
 #reset-btn,
 #back-btn {
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 </style>
