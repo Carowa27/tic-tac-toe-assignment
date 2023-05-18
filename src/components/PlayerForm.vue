@@ -155,7 +155,13 @@ function addPlayerTwo(playerName: string): Player[] {
           Username already exist, if you want to continue using this profile,
           press play, or choose another username
         </p>
-        <input type="text" id="player-one" v-model="playerOneUsername" />
+        <input
+          type="text"
+          id="player-one"
+          v-model="playerOneUsername"
+          minlength="2"
+          placeholder="add username p1"
+        />
       </label>
       <label for="player-two"
         ><section class="label-row">
@@ -172,7 +178,13 @@ function addPlayerTwo(playerName: string): Player[] {
           Username already exist, if you want to continue using this profile,
           press play, or choose another username
         </p>
-        <input type="text" id="player-two" v-model="playerTwoUsername" />
+        <input
+          type="text"
+          id="player-two"
+          v-model="playerTwoUsername"
+          minlength="2"
+          placeholder="add username p2"
+        />
       </label>
       <div id="btn-section">
         <button

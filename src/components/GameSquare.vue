@@ -14,11 +14,11 @@ defineProps<IShowSquareProps>();
 
 <style scoped>
 .game-square {
-  height: 5rem;
-  width: 5rem;
+  height: 32.5%;
+  width: 32.5%;
   border: 1px solid black;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: space-evenly;
+  align-items: space-evenly; */
 }
 </style>

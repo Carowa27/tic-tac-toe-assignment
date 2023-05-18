@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // The full game with all the squares
-import { onMounted, ref } from "vue";
+import { HtmlHTMLAttributes, onMounted, ref } from "vue";
 import GameSquare from "./GameSquare.vue";
 import StartScreen from "./StartScreen.vue";
 import WinnerModal from "./WinnerModal.vue";
@@ -35,36 +35,37 @@ function showHighscore() {
 }
 
 function handleToggle(/*event: Event*/ i: number) {
-  let clickedSquare: HTMLDivElement = document.getElementById(
-    i.toString()
-  ) as HTMLDivElement;
+  // let clickedSquare: HTMLDivElement = document.getElementById(
+  // i.toString()
+  // ) as HTMLDivElement;
   console.log(i);
   board.value[i].clicked = true;
   if (board.value[i].clicked === true) {
     if (player1.value === true) {
       console.log("in double if");
       board.value[i].clickedBy = Clicker.Player1;
-      clickedSquare.classList.add("clicked-by-p-one");
-      const addImg = document.createElement("img");
-      addImg.src =
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/94.png";
-      addImg.alt = "gengar";
-      addImg.id = "gengar";
-      clickedSquare.appendChild(addImg);
+      console.log(board.value);
+      // clickedSquare.classList.add("clicked-by-p-one");
+      // const addImg = document.createElement("img");
+      // addImg.src =
+      //   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/94.png";
+      // addImg.alt = "gengar";
+      // addImg.id = "gengar";
+      // .appendChild(addImg);
     } else {
       board.value[i].clickedBy = Clicker.Player2;
-      clickedSquare.classList.add("clicked-by-p-two");
-      const addImg = document.createElement("img");
-      addImg.src =
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/7.png";
-      addImg.alt = "squirtle";
-      addImg.id = "squirtle";
-      clickedSquare.appendChild(addImg);
+      // clickedSquare.classList.add("clicked-by-p-two");
+      // const addImg = document.createElement("img");
+      // addImg.src =
+      //   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/7.png";
+      // addImg.alt = "squirtle";
+      // addImg.id = "squirtle";
+      // clickedSquare.appendChild(addImg);
     }
     player1.value = !player1.value;
   }
   console.log(board.value);
-  console.log(clickedSquare.classList.contains("clicked-by-p-one"));
+  // console.log(clickedSquare.classList.contains("clicked-by-p-one"));
 }
 
 let gotWinner = ref(false);
@@ -145,7 +146,7 @@ function startGameFn() {
     board.value[2].clickedBy === Clicker.Player2 &&
     board.value[4].clickedBy === Clicker.Player2 &&
     board.value[6].clickedBy === Clicker.Player2;
-  if (
+  const p1Winning =
     rowOnePOne ||
     rowTwoPOne ||
     rowThreePOne ||
@@ -153,14 +154,8 @@ function startGameFn() {
     columnTwoPOne ||
     columnThreePOne ||
     slashPOne ||
-    backSlashPOne
-  ) {
-    console.log("Congratulations,player1!");
-    gotWinner.value = true;
-    winner.value = activePlayers.players[0];
-    gameScr.value = false;
-  }
-  if (
+    backSlashPOne;
+  const p2Winning =
     rowOnePTwo ||
     rowTwoPTwo ||
     rowThreePTwo ||
@@ -168,14 +163,20 @@ function startGameFn() {
     columnTwoPTwo ||
     columnThreePTwo ||
     slashPTwo ||
-    backSlashPTwo
-  ) {
+    backSlashPTwo;
+  if (p1Winning || (allClicked && p1Winning)) {
+    console.log("Congratulations,player1!");
+    gotWinner.value = true;
+    winner.value = activePlayers.players[0];
+    gameScr.value = false;
+  }
+  if (p2Winning || (allClicked && p2Winning)) {
     console.log("Congratulations,player2!");
     gotWinner.value = true;
     winner.value = activePlayers.players[1];
     gameScr.value = false;
   }
-  if (allClicked) {
+  if (allClicked && !p1Winning && !p2Winning) {
     console.log("no winner this time");
     endGame.value = true;
     gameScr.value = false;
@@ -216,7 +217,11 @@ let resetClicked = ref(false);
           @toggle-clicked="() => (handleToggle(id), startGameFn())"
           :key="id"
           class="clicked-by-none"
-        />
+          :class="{
+            'clicked-by-p-one': square.clickedBy === Clicker.Player1,
+            'clicked-by-p-two': square.clickedBy === Clicker.Player2,
+          }"
+        ></GameSquare>
       </div>
       <div class="player-wrapper">
         <b> <span>username</span> </b>
@@ -277,10 +282,8 @@ let resetClicked = ref(false);
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* border: 2px solid greenyellow; */
 }
 .game-mat {
-  /* border: 2px solid lightblue; */
   display: flex;
 }
 .turn-teller {
@@ -293,9 +296,11 @@ let resetClicked = ref(false);
   flex-wrap: wrap;
   border: 2px solid black;
   gap: 0;
+  justify-content: space-evenly;
+  align-items: space-evenly;
+  background-color: black;
 }
 .player-wrapper {
-  /* border: 2px solid violet; */
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -311,13 +316,13 @@ let resetClicked = ref(false);
   align-items: center;
 }
 .clicked-by-none {
-  background-color: rgba(135, 135, 135, 0.473);
+  background-color: rgb(164, 164, 164);
 }
 .clicked-by-p-one {
-  background-color: rgba(85, 49, 113, 0.473);
+  background-color: rgba(165, 133, 190, 0.688);
 }
 .clicked-by-p-two {
-  background-color: rgba(49, 91, 113, 0.473);
+  background-color: rgba(166, 206, 227, 0.688);
 }
 .score-wrapper {
   margin-top: 2rem;
