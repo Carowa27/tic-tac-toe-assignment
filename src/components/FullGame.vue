@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // The full game with all the squares
-import { HtmlHTMLAttributes, onMounted, ref } from "vue";
+import { ref } from "vue";
 import GameSquare from "./GameSquare.vue";
 import StartScreen from "./StartScreen.vue";
 import WinnerModal from "./WinnerModal.vue";
@@ -8,7 +8,6 @@ import { gameSquareList } from "../squareList";
 import { Clicker, Square } from "../models/Square";
 import { Player } from "../models/Player";
 import NoWinnerModal from "./NoWinnerModal.vue";
-import NewGameModal from "./NewGameModal.vue";
 
 interface IPlayersProps {
   players: Player[];
@@ -34,10 +33,7 @@ function showHighscore() {
   console.log(highscore);
 }
 
-function handleToggle(/*event: Event*/ i: number) {
-  // let clickedSquare: HTMLDivElement = document.getElementById(
-  // i.toString()
-  // ) as HTMLDivElement;
+function handleToggle(i: number) {
   console.log(i);
   board.value[i].clicked = true;
   if (board.value[i].clicked === true) {
@@ -45,27 +41,12 @@ function handleToggle(/*event: Event*/ i: number) {
       console.log("in double if");
       board.value[i].clickedBy = Clicker.Player1;
       console.log(board.value);
-      // clickedSquare.classList.add("clicked-by-p-one");
-      // const addImg = document.createElement("img");
-      // addImg.src =
-      //   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/94.png";
-      // addImg.alt = "gengar";
-      // addImg.id = "gengar";
-      // .appendChild(addImg);
     } else {
       board.value[i].clickedBy = Clicker.Player2;
-      // clickedSquare.classList.add("clicked-by-p-two");
-      // const addImg = document.createElement("img");
-      // addImg.src =
-      //   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/7.png";
-      // addImg.alt = "squirtle";
-      // addImg.id = "squirtle";
-      // clickedSquare.appendChild(addImg);
     }
     player1.value = !player1.value;
   }
   console.log(board.value);
-  // console.log(clickedSquare.classList.contains("clicked-by-p-one"));
 }
 
 let gotWinner = ref(false);
@@ -189,17 +170,12 @@ function startNewGame() {
     console.log("in loop");
     board.value[i].clicked = false;
     board.value[i].clickedBy = Clicker.None;
-    // let clickedSquare = document.getElementById(i.toString()) as HTMLDivElement;
-    // clickedSquare.classList.remove("clicked-by-p-one");
-    // clickedSquare.classList.remove("clicked-by-p-two");
-    // clickedSquare.innerText = "";
   }
 
   endGame.value = false;
   gotWinner.value = false;
   gameScr.value = true;
 }
-let resetClicked = ref(false);
 </script>
 <template>
   <section class="game-wrapper" v-if="gameScr">
@@ -243,11 +219,6 @@ let resetClicked = ref(false);
         </p>
       </div>
     </section>
-    <!-- <button id="reset-btn" @click="resetClicked = true">Reset Game</button> -->
-    <!-- <div class="score-wrapper">
-      <button @click="() => showHighscore()">Show scores</button>
-      <section v-if="highscore">Highscores will show</section>
-    </div> -->
     <button id="back-btn" @click="() => goToStartScr()">Back to Start</button>
   </section>
   <StartScreen v-if="startScr" />
@@ -270,11 +241,6 @@ let resetClicked = ref(false);
     v-if="endGame"
     @start-new-game="startNewGame"
   />
-  <!-- <NewGameModal
-    v-if="resetClicked"
-    @start-new-game="startNewGame"
-    @go-to-start="goToStartScr"
-  /> -->
 </template>
 
 <style scoped>
