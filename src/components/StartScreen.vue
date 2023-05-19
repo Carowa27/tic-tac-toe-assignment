@@ -5,23 +5,16 @@ import PlayerForm from "./PlayerForm.vue";
 // Start screen for game and stats
 let startScr = ref(true);
 let player = ref(false);
-let highscore = ref(false);
 
 function goToPlayScr() {
   startScr.value = false;
   player.value = true;
-}
-
-function goToHighscoreScr() {
-  startScr.value = false;
-  highscore.value = true;
 }
 </script>
 
 <template>
   <section v-if="startScr">
     <button @click="() => goToPlayScr()">Play</button>
-    <button @click="() => goToHighscoreScr()">Highscore</button>
   </section>
   <PlayerForm v-if="player" />
 </template>

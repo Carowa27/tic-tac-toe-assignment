@@ -9,6 +9,7 @@ import { PlayerStats } from "../models/PlayerStats";
 let playerScr = ref(true);
 let startScr = ref(false);
 let gameScr = ref(false);
+let usernameError = ref(false);
 
 function goToStartScr() {
   startScr.value = true;
@@ -22,29 +23,6 @@ function goToGameScr() {
 
 let playerOneUsername = ref("");
 let playerTwoUsername = ref("");
-
-let playerOneAlreadyExist = ref(false);
-let playerTwoAlreadyExist = ref(false);
-
-function checkUsernames(playerOneName: string, playerTwoName: string) {
-  playerOneAlreadyExist.value = false;
-  playerTwoAlreadyExist.value = false;
-
-  let playerList: Player[] = getPlayerListFromLS();
-  for (let i = 0; i < playerList.length; i++) {
-    if (playerList[i].username === playerOneName) {
-      playerOneAlreadyExist.value = true;
-    }
-    if (playerList[i].username === playerTwoName) {
-      playerTwoAlreadyExist.value = true;
-    }
-  }
-  console.log(playerList);
-}
-// function addPlayerNames(playerOneName: string, playerTwoName: string) {
-//   addPlayer(playerOneName);
-//   addPlayer(playerTwoName);
-// }
 
 let players: Player[] = [];
 
@@ -61,8 +39,6 @@ function addPlayerOne(playerName: string): Player[] {
         return players;
       } else {
         const newPlayer = new Player(playerName);
-        // playerList.push(newPlayer);
-        // setPlayerListInLS(playerList);
         players.push(newPlayer);
 
         console.log("added", newPlayer, "to Game & LS");
@@ -75,8 +51,6 @@ function addPlayerOne(playerName: string): Player[] {
   } else {
     const newPlayer = new Player(playerName);
     const newPlayerWStats = new PlayerStats(newPlayer, 0);
-    // playerList.push(newPlayer);
-    // setPlayerListInLS(playerList);
     players.push(newPlayer);
 
     console.log("added", newPlayer, "to Game & LS");
@@ -100,8 +74,6 @@ function addPlayerTwo(playerName: string): Player[] {
         return players;
       } else {
         const newPlayer = new Player(playerName);
-        // playerList.push(newPlayer);
-        // setPlayerListInLS(playerList);
         players.push(newPlayer);
 
         console.log("added", newPlayer, "to Game & LS");
@@ -114,8 +86,6 @@ function addPlayerTwo(playerName: string): Player[] {
   } else {
     const newPlayer = new Player(playerName);
     const newPlayerWStats = new PlayerStats(newPlayer, 0);
-    // playerList.push(newPlayer);
-    // setPlayerListInLS(playerList);
     players.push(newPlayer);
 
     console.log("added", newPlayer, "to Game & LS");
@@ -125,20 +95,24 @@ function addPlayerTwo(playerName: string): Player[] {
   }
   return players;
 }
+const checkUsernames = () => {
+  if (
+    playerOneUsername.value.length >= 2 &&
+    playerTwoUsername.value.length >= 2
+  ) {
+    addPlayerOne(playerOneUsername.value),
+      addPlayerTwo(playerTwoUsername.value),
+      goToGameScr();
+  } else {
+    usernameError.value = true;
+  }
+};
 </script>
 
 <template>
   <section v-if="playerScr">
     <h3>Who is playing?</h3>
-    <form
-      @submit.prevent="
-        () => (
-          addPlayerOne(playerOneUsername),
-          addPlayerOne(playerTwoUsername),
-          goToGameScr()
-        )
-      "
-    >
+    <form @submit.prevent="() => checkUsernames()">
       <label for="player-one"
         ><section class="label-row">
           <img
@@ -151,10 +125,6 @@ function addPlayerTwo(playerName: string): Player[] {
             <b>{{ playerOneUsername }}</b>
           </p>
         </section>
-        <p id="warning" v-if="playerOneAlreadyExist">
-          Username already exist, if you want to continue using this profile,
-          press play, or choose another username
-        </p>
         <input
           type="text"
           id="player-one"
@@ -174,10 +144,6 @@ function addPlayerTwo(playerName: string): Player[] {
             Player2 -> <b>{{ playerTwoUsername }}</b>
           </p>
         </section>
-        <p id="warning" v-if="playerTwoAlreadyExist">
-          Username already exist, if you want to continue using this profile,
-          press play, or choose another username
-        </p>
         <input
           type="text"
           id="player-two"
@@ -186,16 +152,10 @@ function addPlayerTwo(playerName: string): Player[] {
           placeholder="add username p2"
         />
       </label>
-      <div id="btn-section">
-        <button
-          type="button"
-          id="check-btn"
-          @click="() => checkUsernames(playerOneUsername, playerTwoUsername)"
-        >
-          Check usernames
-        </button>
-        <button type="submit" id="play-btn">Play</button>
-      </div>
+      <p id="warning" v-if="usernameError">
+        username is too short, needs to be 2 or more characters
+      </p>
+      <button type="submit" id="play-btn">Play</button>
     </form>
     <button id="back-btn" @click="() => goToStartScr()">Back to Start</button>
   </section>
