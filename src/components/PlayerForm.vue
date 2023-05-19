@@ -26,83 +26,23 @@ let playerTwoUsername = ref("");
 
 let players: Player[] = [];
 
-function addPlayerOne(playerName: string): Player[] {
-  let playerList: Player[] = getPlayerListFromLS();
-  console.log(playerList);
-  if (playerList.length !== 0) {
-    for (let i = 0; i < playerList.length; i++) {
-      console.log(playerList[i], i);
-      if (playerList[i].username === playerName) {
-        players.push(playerList[i]);
+const addPlayer = (playerName: string) => {
+  const newPlayer = new Player(playerName);
+  players.push(newPlayer);
 
-        console.log("added", playerList[i], "to Game");
-        return players;
-      } else {
-        const newPlayer = new Player(playerName);
-        players.push(newPlayer);
+  console.log("added", newPlayer, "to Game & LS");
 
-        console.log("added", newPlayer, "to Game & LS");
-
-        console.log("players list", players);
-        console.log("LS list", playerList);
-        return players;
-      }
-    }
-  } else {
-    const newPlayer = new Player(playerName);
-    const newPlayerWStats = new PlayerStats(newPlayer, 0);
-    players.push(newPlayer);
-
-    console.log("added", newPlayer, "to Game & LS");
-
-    console.log("players list", players);
-    console.log("LS list", playerList);
-  }
+  console.log("players list", players);
   return players;
-}
-function addPlayerTwo(playerName: string): Player[] {
-  let playerList: Player[] = getPlayerListFromLS();
-  console.log(playerList);
-  if (playerList.length !== 0) {
-    for (let i = 0; i < playerList.length; i++) {
-      //minst en gång i loopen är fel vilket gör att den kommer att lägga till för många
-      console.log(playerList[i], i);
-      if (playerList[i].username === playerName) {
-        players.push(playerList[i]);
-
-        console.log("added", playerList[i], "to Game");
-        return players;
-      } else {
-        const newPlayer = new Player(playerName);
-        players.push(newPlayer);
-
-        console.log("added", newPlayer, "to Game & LS");
-
-        console.log("players list", players);
-        console.log("LS list", playerList);
-        return players;
-      }
-    }
-  } else {
-    const newPlayer = new Player(playerName);
-    const newPlayerWStats = new PlayerStats(newPlayer, 0);
-    players.push(newPlayer);
-
-    console.log("added", newPlayer, "to Game & LS");
-
-    console.log("players list", players);
-    console.log("LS list", playerList);
-  }
-  return players;
-}
+};
 const checkUsernames = () => {
   if (
     playerOneUsername.value.length >= 2 &&
     playerTwoUsername.value.length >= 2
   ) {
-    addPlayerOne(playerOneUsername.value),
-      addPlayerTwo(playerTwoUsername.value),
-      goToGameScr();
+    addPlayer(playerOneUsername.value);
+    addPlayer(playerTwoUsername.value);
+    goToGameScr();
   } else {
     usernameError.value = true;
   }
