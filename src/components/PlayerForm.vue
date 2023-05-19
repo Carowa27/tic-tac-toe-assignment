@@ -3,8 +3,6 @@ import { ref } from "vue";
 import FullGame from "./FullGame.vue";
 import StartScreen from "./StartScreen.vue";
 import { Player } from "../models/Player";
-import { getPlayerListFromLS, setPlayerListInLS } from "../localStorageFns";
-import { PlayerStats } from "../models/PlayerStats";
 // Form for player names
 let playerScr = ref(true);
 let startScr = ref(false);
