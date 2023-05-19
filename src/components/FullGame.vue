@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// The full game with all the squares
 import { ref } from "vue";
 import GameSquare from "./GameSquare.vue";
 import StartScreen from "./StartScreen.vue";
@@ -26,12 +25,6 @@ function goToStartScr() {
 
 let board = ref<Square[]>(gameSquareList);
 let player1 = ref(true);
-
-let highscore = ref(false);
-function showHighscore() {
-  highscore.value = !highscore.value;
-  console.log(highscore);
-}
 
 function handleToggle(i: number) {
   console.log(i);
@@ -232,15 +225,7 @@ function startNewGame() {
     v-if="gotWinner"
     @start-new-game="startNewGame"
   />
-  <NoWinnerModal
-    :players="players"
-    :got-winner="gotWinner"
-    :end-game="endGame"
-    :player1="player1"
-    :board="board"
-    v-if="endGame"
-    @start-new-game="startNewGame"
-  />
+  <NoWinnerModal v-if="endGame" @start-new-game="startNewGame" />
 </template>
 
 <style scoped>

@@ -1,17 +1,5 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Player } from "../models/Player";
-import { Square } from "../models/Square";
-
-interface INoWinnerProps {
-  players: Player[];
-  player1: boolean;
-  board: Square[];
-  gotWinner: boolean;
-  endGame: boolean;
-}
-let playerInfo = defineProps<INoWinnerProps>();
-
 let gameScr = ref(false);
 let noWinnerModal = ref(true);
 
@@ -34,7 +22,6 @@ function goToGameScr() {
           <button @click="() => ($emit('startNewGame'), goToGameScr())">
             new game
           </button>
-          <button>highscores</button>
         </section>
       </section>
       <img
@@ -58,7 +45,7 @@ function goToGameScr() {
 .modal-content {
   background-color: rgb(53, 53, 53);
   color: rgb(255, 255, 255);
-  border: 2px solid rgb(248, 56, 56);
+  border: 3px solid rgb(248, 56, 56);
   margin: auto;
   padding: 10px;
   border-radius: 10px;
@@ -75,6 +62,7 @@ button {
   min-width: 10rem;
   max-width: 15rem;
   align-self: center;
+  border: 1px solid rgba(248, 56, 56, 0.539);
 }
 .info-wrapper {
   display: flex;

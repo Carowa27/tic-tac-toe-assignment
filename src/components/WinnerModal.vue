@@ -49,10 +49,17 @@ let players = playerInfo.players;
           <p>You won the game!</p>
         </section>
         <section class="btn-wrapper">
-          <button @click="() => ($emit('startNewGame'), goToGameScr())">
+          <button
+            :class="{
+              'win--gengar':
+                playerInfo.winner.username === playerInfo.players[0].username,
+              'win--squirtle':
+                playerInfo.winner.username === playerInfo.players[1].username,
+            }"
+            @click="() => ($emit('startNewGame'), goToGameScr())"
+          >
             new game
           </button>
-          <button>highscores</button>
         </section>
       </section>
     </div>
@@ -71,7 +78,7 @@ let players = playerInfo.players;
 .modal-content {
   background-color: rgb(53, 53, 53);
   color: rgb(255, 255, 255);
-  border: 2px solid rgb(148, 255, 148);
+  border: 3px solid rgb(148, 255, 148);
   margin: auto;
   padding: 10px;
   border-radius: 10px;
@@ -88,6 +95,7 @@ button {
   min-width: 10rem;
   max-width: 15rem;
   align-self: center;
+  border: 1px solid rgba(1, 125, 1, 0.539);
 }
 .info-wrapper {
   display: flex;
@@ -122,5 +130,11 @@ p {
 }
 #winner {
   font-variant: small-caps;
+}
+.win--gengar {
+  background-color: rgba(165, 133, 190, 0.688);
+}
+.win--squirtle {
+  background-color: rgba(166, 206, 227, 0.688);
 }
 </style>
